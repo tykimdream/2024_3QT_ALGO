@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -19,10 +18,7 @@ public class Main {
 		int m = sc.nextInt();
 
 		for (int i = 0; i < m; i++) {
-			if (binsec(arr, 0, n - 1, sc.nextInt()))
-				sb.append(1).append(" ");
-			else
-				sb.append(0).append(" ");
+			sb.append(binsec(arr, 0, n - 1, sc.nextInt()) ? 1 : 0).append(" ");
 		}
 
 		System.out.println(sb.toString());
@@ -30,7 +26,6 @@ public class Main {
 
 	private static boolean binsec(int[] arr, int bottom, int top, int target) {
 		// 이분 탐색으로 해당 수가 arr에 있는지 확인한다.
-
 		while (top >= bottom) {
 			int index = (top + bottom) / 2;
 			if (arr[index] == target)
@@ -42,7 +37,6 @@ public class Main {
 				bottom = index + 1;
 			}
 		}
-
 		return false;
 	}
 }
