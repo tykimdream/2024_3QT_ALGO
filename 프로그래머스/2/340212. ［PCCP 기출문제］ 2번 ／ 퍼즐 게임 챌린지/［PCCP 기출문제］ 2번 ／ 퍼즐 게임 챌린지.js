@@ -22,8 +22,6 @@ function solution(diffs, times, limit) {
             max = mid - 1;
         }
     }
-    
-    
     return min;
 }
     
