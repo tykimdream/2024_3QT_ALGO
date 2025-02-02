@@ -2,14 +2,15 @@ function solution(gems) {
     const gemTypes = new Set(gems).size;
     const counter = {};
     const len = gems.length;
-    let start = 0, end = 0;
-    let currentTypes = 0;
+    
+    let start = 0, currentTypes = 0;
     let answer = [1, len];
     
-    for(;end < len; end++){
+    gems.forEach((gem, end) =>{
         if(!counter[gems[end]]){
             currentTypes++;
         }
+        
         counter[gems[end]] = (counter[gems[end]] || 0) + 1;
         
         while(currentTypes === gemTypes){
@@ -21,9 +22,10 @@ function solution(gems) {
             if(counter[gems[start]] === 0){
                 currentTypes--;
             }
-            start++;
+            start++;            
         }
-    }
+        
+    })
     
     return answer;
 }
