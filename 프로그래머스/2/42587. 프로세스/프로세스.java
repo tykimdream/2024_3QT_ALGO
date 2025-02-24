@@ -1,34 +1,43 @@
 import java.util.*;
 
 class Solution {
-    public int solution(int[] priorities, int location) {
-        int answer = 0;
-        int count = 0;
-        Queue<int[]> que = new LinkedList<>();
+    class Node implements Comparable<Node>{
+        int p;
+        int id;
         
-        for(int i = 0; i < priorities.length; i++){
-            que.add(new int[] {priorities[i], i});
+        public Node(int p, int i){
+            this.p = p;
+            this.id = i;
         }
         
+        @Override
+        public int compareTo(Node a){
+            return a.p - this.p;
+        }
+    }
+    
+    public int solution(int[] priorities, int location) {
+        Queue<Node> que = new LinkedList<>();
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        
+        for(int i = 0; i < priorities.length; i++){
+            Node node = new Node(priorities[i], i);
+            que.offer(node);
+            pq.offer(node);
+        }
+        
+        int count = 0;
+        
         while(que.isEmpty() == false){
-            int[] temp = que.poll();
-            boolean pushed = false;
+            Node current = que.poll();
             
-            for(int[] item : que){
-                if(item[0] > temp[0]){
-                    pushed = true;
-                    break;
-                }
-            }
-            
-            if(pushed){
-                que.add(temp);
-            }else{
+            if(current.p >= pq.peek().p){
+                pq.poll();
                 count++;
-                if(temp[1] == location) return count;
-                
+                if(current.id == location) return count;
+            }else{
+                que.offer(current);
             }
-            
         }
         
         return count;
