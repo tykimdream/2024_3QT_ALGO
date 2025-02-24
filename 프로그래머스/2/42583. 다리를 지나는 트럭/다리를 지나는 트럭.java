@@ -2,52 +2,34 @@ import java.util.*;
 
 class Solution {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
-        int answer = 0;
+        Queue<Integer> que = new LinkedList<>();
+        Queue<int[]> bridge = new LinkedList<>();
+        int time = 0;
         
-        Queue<int[]> que = new LinkedList<>();
-        Queue<int[]> bri = new LinkedList<>();
+        for(int x : truck_weights){
+            que.offer(x);
+        }
         
-        for(int t : truck_weights) que.add(new int[] {t, -1});
-        
-        while(que.isEmpty() == false){
-            int[] temp = que.peek();
+        while(que.isEmpty() == false || bridge.isEmpty() == false){
+            int bridge_weight = 0;
+            int size =  bridge.size();
             
-            int curW = 0;
-            if(bri.isEmpty() == false){
-                for(int[] t : bri){
-                    curW += t[0];
+            for(int i = 0; i < size; i++){
+                int[] current = bridge.poll();
+                current[1] -= 1;
+                if(current[1] > 0){
+                    bridge_weight += current[0];    
+                    bridge.offer(current);
                 }
             }
             
-            // 다리에 빈 자리가 있는 지 && 다리에 올라갈 수 있는 상태인지 (중량 확인)
-            if(bri.size() < bridge_length && curW + temp[0] <= weight){
-                que.poll();
-                bri.add(temp);
-            }
-            
-            // 다리에 있던 애들 시간 추가
-            for(int[] t : bri){
-                t[1]++;
-            }
-        
-            while(bri.size() > 0 && bri.peek()[1] == bridge_length - 1){
-                bri.poll(); 
-            }
-            answer++;
+            // 트럭 추가 가능
+            if(que.isEmpty() == false && bridge_weight + que.peek() <= weight){
+                bridge.offer(new int[]{que.poll(), bridge_length});
+            }     
+            time++;
         }
         
-        while(bri.isEmpty() == false){
-            // 다리에 있던 애들 시간 추가
-            for(int[] t : bri){
-                t[1]++;
-            }
-        
-            while(bri.size() > 0 && bri.peek()[1] == bridge_length){
-                bri.poll(); 
-            }
-            answer++;
-        }
-        
-        return answer;
+        return time;
     }
 }
