@@ -6,11 +6,10 @@ class Solution {
     public int dfs(int[] numbers, int index, int sum, int target){
         if(index == numbers.length){
             if(sum == target) return 1;
+            return 0;
         }
-        for(int i = index; i < numbers.length; i++){
-            return dfs(numbers, i + 1, sum + numbers[i], target) + 
-                dfs(numbers, i + 1, sum - numbers[i], target);
-        }
-        return 0;
+        
+        return dfs(numbers, index + 1, sum + numbers[index], target) + 
+                dfs(numbers, index + 1, sum - numbers[index], target);
     }
 }
